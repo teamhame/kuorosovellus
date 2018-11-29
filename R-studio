@@ -1,0 +1,44 @@
+#palautustehtävä:
+#t1
+summary(car)
+#t2
+hist(mtcars$mpg, n=32)
+#t3
+which(mtcars ==max(hp), arr.ind = TRUE)
+#t4
+mtcars[which(mtcars$cyl==4),]
+#t5
+cylinder =mtcars$cyl
+cylinder.freq = table(cylinder)
+pie(cylinder.freq)
+#t5 parempi tapa
+barplot(cylinder.freq)
+#t6 selostus
+# mitä vähemmän hevosvoimaa, sitä suurempi bensan kulutus 
+#t7 
+boxplot(hp, data=mtcars, xlab = "hp")
+#t7 selostus
+# Mediaani on merkattu kuvioon maksuna mustana viivana. Mediaani on listan arvojen keskimmäinen
+#luku. Mediaanin perusteella määritellään myös 1. ja 3. kvartaali. 1. kvartaali on mediaani
+#koko joukon mediaanista ja joukon pienimmästä arvosta. 3. kvartaali on mediaani
+#koko joukon mediaanista ja suurimmasta arvosta.
+
+#t8
+#ylemmällä rivillä on listattuna vaihteet välillä 3-5 ja alla kuinka monta
+#kappaletta kutakin vaihdetta mtcars-taulussa on
+table(gear)
+
+#t9
+data <- mtcars[order(mpg),]
+data
+data[order(mpg)[1:3],]
+
+#t10
+# korrelaatio on asioiden riippuvuussuhde toisiinsa nähden. Korrelaatiokerroin on 
+# [-1, 1] välillä ja se, kuinka lähellä 1:stä kerroin on, sitä selvempi yhteys
+# niiden välillä on. Toisin sanoen 1= 100% syy-seuraussuhde ja -1= -100% eli ei lainkaan tekemisissä
+# toistensa kanssa. Mpg:n ja HP:n yhteys toisiinsa ei ole kovin merkittävä, sillä
+#korrelaatiokkeroin on ~ -0.776
+cor(mtcars)
+cor(mtcars$mpg, mtcars$hp)
+# tulos [1] -0.7761684
