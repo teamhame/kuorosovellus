@@ -111,7 +111,7 @@ app.post('/login', function(req, res, next) {
       return next(err);
     }
     if (!user) { // if login not happening
-      return res.redirect('/node/login.html');
+      return res.redirect('/node/'); //login.html otettu pois, sillä ohjasi rekisteröitymättömät käyttäjät sinne
     }
     req.logIn(user, function(err) {
       // send userID as cookie:
@@ -119,7 +119,7 @@ app.post('/login', function(req, res, next) {
       if (err) {
         return next(err);
       }
-      return res.redirect('/node/kuvanlisays.html'); // if login succesful
+      return res.redirect('/node/login.html'); // if login succesful
     });
   })(req, res, next);
 });
@@ -263,7 +263,7 @@ app.use('/videoupload', (req, res, next) => {
     req.body[1],
     req.body[0],
     req.body[2],
-    req.user.kayttajaId
+    req.user.kayttajaId,
   ];
   console.log(data3, 'data3');
   db.insertVideo(data3, connection, next);
@@ -279,10 +279,54 @@ app.use('/videoupload', (req, res) => {
 //
 
 //
-//--------------------KOMMENTOINTI----------------------------------
+//--------------------KOMMENTOINTI--------Tästä jatkuu--------------------------
+//
+/*
+app.post('/kommenttiupload', (req, res, next) => {
+  console.log(req.body, 'data6');
+  next();
+});
+app.use('/kommenttiupload', (req, res, next) => {
+  const data6 = [
+    req.body[0],
+    req.user.kayttajaId,
+  ];
+  console.log(data6, 'data6');
+  db.insertKommentti(data6, connection, next);
+});
+
+app.use('/kommenttiupload', (req, res, next) => { ///kommenttiupload ennen
+  db.selectKommentit(connection, (results) => {
+    req.custom2 = results;
+    console.log(req.custom2, 'kommentti custom2');
+    next();
+  });
+});
+
+app.use('/kommenttiupload', (req, res) => {
+  console.log('viimenene kohta', req.custom2);
+  res.send(req.custom2);
+});*/
+
+//
+//----------------KOMMENTTIEN LATAUS VALMIILLE SIVULLE----------------------
 //
 
-app.post('/kommenttiupload', (req, res, next)=>{
+app.use('/kommenttidownload', (req, res, next) => { ///kommenttiupload ennen
+  db.selectKommentit(connection, (results) => {
+    req.custom3 = results;
+    console.log(req.custom3, 'kommentti download');
+    next();
+  });
+});
+
+app.use('/kommenttidownload', (req, res) => {
+  console.log('downloadin viimenene kohta', req.custom3);
+  res.send(req.custom3);
+});
+
+//toimii
+ app.post('/kommenttiupload', (req, res, next)=>{
   console.log(req.body, 'data6');
   next();
 });
@@ -293,8 +337,8 @@ app.use('/kommenttiupload', (req, res, next)=>{
   ];
   console.log(data6, 'data6');
   db.insertKommentti(data6, connection, next);
+  //next();
 });
-
 
 app.use('/kommenttiupload', (req, res, next)=>{
   db.selectKommentit(connection, (results)=>{
@@ -309,13 +353,60 @@ app.use('/kommenttiupload', (req, res) =>{
   res.send(req.custom2);
 });
 
-
-
 //
-//-------------------------------------------------------------
+//-------------------KUVIEN JA ÄÄNEN HAKU------------------------
 //
 
+app.post('/uploadhaku', (req, res, next) => {
+  console.log(req.body, 'data7');
+  next();
+});
 
+app.use('/uploadhaku', (req, res, next) => {
+  const data7 = [
+    '%'+req.body[0]+'%',
+  ];
+  console.log(data7, 'data7');
+  db.selectHaku(data7, connection, (results) => {
+    req.custom3 = results;
+    next();
+  });
+});
+
+app.use('/uploadhaku', (req, res) => {
+  console.log('viimenene kohta', req.custom3);
+  res.send(req.custom3);
+});
+
+//
+//---------------------Videoiden haku------------------------------
+//
+
+app.post('/uploadvideohaku', (req, res, next) => {
+  console.log(req.body, 'Tässä on frontista tullut data8');
+  next();
+});
+
+app.use('/uploadvideohaku', (req, res, next) => {
+  const data8 = [
+    '%' + req.body[0] + '%',
+  ];
+  console.log(data8, 'tämä on backissä muuttujan data8 arvo');
+  db.selectVideoHaku(data8, connection, (results) => {
+    req.custom4 = results;
+    next();
+  });
+});
+
+app.use('/uploadvideohaku', (req, res) => {
+  console.log('Tämä on videoiden noutamisen viimeinen osa backissä',
+      req.custom4);
+  res.send(req.custom4);
+});
+
+//
+//----------------------------------------------------------------
+//
 
 app.get('/logged', (req, res) => {
   if (req.user) {

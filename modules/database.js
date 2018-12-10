@@ -137,22 +137,26 @@ const insertTiedote = (data, connection, callback) => {
 };
 
 //lähetä kommentti tietokantaan
-const insertKommentti = (data, connection, callback) =>{
-    connection.execute(
-        'INSERT INTO Kommentti (kommenttiTeksti, kommenttiAikaleima, keskusteluId, kayttajaId) VALUES (?, NOW(), 1, ?);',
-        data,
-        (err, results) =>{
-          console.log(err, ' database insertkommentti console log');
-          callback();
-        },
-    );
+const insertKommentti = (data, connection, callback) => {
+  connection.execute(
+      'INSERT INTO Kommentti (kommenttiTeksti, kommenttiAikaleima, keskusteluId, kayttajaId) VALUES (?, NOW(), 1, ?);',
+      data,
+      (err, results) => {
+        console.log(err, ' database insertkommentti console log');
+        callback();
+      },
+  );
 };
 
 //kommenttien nouto
 const selectKommentit = (connection, callback) => {
   // simple query
   connection.query(
-      'SELECT kayttajaId, kommenttiAikaleima, kommenttiTeksti FROM Kommentti',
+      'SELECT Kayttaja.kayttajaEtunimi, Kayttaja.kayttajaSukunimi, Kommentti.kommenttiAikaleima, Kommentti.kommenttiTeksti\n' +
+      'FROM Kayttaja, Kommentti\n' +
+      'WHERE Kommentti.kayttajaId = Kayttaja.kayttajaId\n' +
+      'ORDER BY Kommentti.kommenttiAikaleima DESC;',
+      //'SELECT kayttajaId, kommenttiAikaleima, kommenttiTeksti FROM Kommentti',
       (err, results, fields) => {
         console.log(err);
         callback(results);
@@ -160,6 +164,33 @@ const selectKommentit = (connection, callback) => {
   );
 };
 
+//tiedostojen nouto tietokannasta
+const selectHaku = (data, connection, callback) => {
+  // simple query
+  connection.query(
+      'SELECT * FROM Media WHERE mediaNimi LIKE ?;',
+      data,
+      (err, results, fields) => {
+        console.log(err);
+        callback(results);
+      },
+  );
+};
+
+//videoiden nouto tietokannasta
+const selectVideoHaku = (data, connection, callback) => {
+  // simple query
+  // 101218 klo 1057 Ville muuttanut .query:n .execute:ksi => ei toiminut
+  // yritetty yhdistää ?-lausetta ja LIKE-lausetta;
+  connection.execute(
+      'SELECT * FROM Video WHERE videoNimi LIKE ?;',
+      data,
+      (err, results, fields) => {
+        console.log(err);
+        callback(results);
+      },
+  );
+};
 
 const update = (data, connection) => {
   // simple query
@@ -188,4 +219,6 @@ module.exports = {
   insertTapahtuma: insertTapahtuma,
   insertKommentti: insertKommentti,
   selectKommentit: selectKommentit,
+  selectHaku: selectHaku,
+  selectVideoHaku: selectVideoHaku,
 };

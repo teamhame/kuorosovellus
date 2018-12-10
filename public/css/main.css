@@ -71,21 +71,35 @@ body {
     float: right;
     height: inherit;
 }
+
 .lasnaolo {
     width: 30%;
     background-color: white;
     color: black;
 }
+.kalenterimuotoilu{
+    align-content: center;
+   justify-content: space-between;
+    width: 90%;
+
+}
 .kalenteri {
     display: flex;
     flex-wrap: wrap;
-    width: 90%;
-    max-width: 1000px;
+    width: 45%;
+    max-width: 500px;
     height: 400px;
     background: rgba(255, 255, 255, 0.3);
     margin: 5%;
     overflow: hidden;
 }
+.pienikalenteri1{
+    float: left;
+}
+.pienikalenteri2{
+    float: right;
+}
+
 .kalenteri2 {
     display: flex;
     flex-wrap: wrap;
@@ -108,25 +122,30 @@ body {
     margin: 0;
     overflow: scroll;
 }
-.kommenttikentta{
+
+.kommenttikentta {
     height: 40px;
     width: 100%;
     float: bottom;
     justify-content: center;
 }
-#jataKommentti{
+
+#jataKommentti {
     height: 40px;
     width: 80%;
 }
-#submitKommentti{
+
+#submitKommentti {
     width: 10%;
     height: 40px;
     background-color: violet;
 }
+
 .input {
     width: 70%;
     height: 10%;
 }
+
 input {
     width: 20%;
     background-color: white;
@@ -160,7 +179,9 @@ ul {
     margin-left: 20px;
     width: 90%;
 }
-
+li{
+    line-height: 200%;
+}
 .haku {
     width: 20%;
     height: 20px;
@@ -190,6 +211,22 @@ button {
     font-size: 16px;
 }
 
+#x {
+   width: 5%;
+    background-color: aliceblue;
+    color: black;
+}
+
+.modal{
+    width: 80%;
+
+}
+
+.modal img{
+    width: 100%;
+
+}
+
 .nuoli-nappi {
     height: 100%;
     float: right;
@@ -200,6 +237,7 @@ button {
     margin: auto;
     align-self: center;
 }
+
 .margin {
     margin-bottom: 10px;
     margin-top: 10px;
@@ -251,6 +289,10 @@ button {
 .valikko .icon {
     display: none;
 }
+
+.hidden {
+      display: none !important;
+  }
 
 /***************************************************************************************/
 /*scroll styling*/
@@ -333,23 +375,19 @@ button {
     .valikko a {
         display: none;
     }
-
     .valikko a.icon {
-        float: right;
+        float: left;
         display: block;
     }
-
     .valikko.responsive {
         position: relative;
     }
-
     .valikko.responsive .icon {
         position: absolute;
         right: 0;
         top: 0;
         overflow: auto;
     }
-
     .valikko.responsive a {
         float: none;
         display: block;
